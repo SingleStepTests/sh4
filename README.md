@@ -1,0 +1,2 @@
+# sh4
+Repository for EXPERIMENTAL, PROBABLY NOT THAT GREAT JSON tests for the Hitachi SH-4, UNDER DEVELOPMENT.
