@@ -131,3 +131,32 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
+'''
+    for (u32 i = 0; i < 16; i++) {
+        W32(R[i]);
+    }
+    // R_0-R_7
+    for (u32 i = 0; i < 8; i++) {
+        W32(R_[i]);
+    }
+    // FP bank 0 0-15, and bank 1 0-15
+    for (u32 b = 0; b < 2; b++) {
+        for (u32 i = 0; i < 16; i++) {
+            W32(fb[b].U32[i]);
+        }
+    }
+    W32(PC);
+    W32(GBR);
+    W32(SR);
+    W32(SSR);
+    W32(SPC);
+    W32(VBR);
+    W32(SGR);
+    W32(DBR);
+    W32(MACL);
+    W32(MACH);
+    W32(PR);
+    W32(FPSCR);
+'''
