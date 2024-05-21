@@ -123,11 +123,15 @@ def decode_file(infilename, outfilename):
     with open(outfilename, 'w') as outfile:
         outfile.write(json.dumps(tests, indent=2))
 
-
-def main():
-    fs = glob.glob(SH4_JSON_PATH + '**.json.bin')
+def do_path(where):
+    print("Doing path...", where)
+    fs = glob.glob(where + '**.json.bin')
     for fname in fs:
         decode_file(fname, fname[:-4])
+
+def main():
+    do_path(SH4_JSON_PATH)
+    do_path(SH4_JSON_PATH + 'reicast/')
 
 if __name__ == '__main__':
     main()
