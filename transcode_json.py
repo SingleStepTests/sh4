@@ -131,7 +131,6 @@ def do_path(where):
 
 def main():
     do_path(SH4_JSON_PATH)
-    do_path(SH4_JSON_PATH + 'reicast/')
 
 if __name__ == '__main__':
     main()
