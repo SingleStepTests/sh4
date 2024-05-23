@@ -57,9 +57,8 @@ def load_cycles(buf, ptr) -> (int, Dict):
     full_sz = unpack_from('i', buf, ptr)[0]
     ptr += 12
     for i in range(0, 4):
-        values = unpack_from('IQQQQQQ', buf, ptr)
-        ptr += 4
-        ptr += (6 * 8)
+        values = unpack_from('<IIIIIII', buf, ptr)
+        ptr += (7 * 4)
         cycle = {
             'actions': values[0],
             'fetch_addr': values[1],
@@ -69,6 +68,10 @@ def load_cycles(buf, ptr) -> (int, Dict):
             'read_addr': values[5],
             'read_val': values[6]
         }
+        if (values[1] > 0xFFFFFFFF) or (values[5] < 0):
+            print('what?', values)
+        if values[2] > 0xFFFF:
+            print('huh?', values)
         if not (cycle['actions'] & 4):
             del cycle['fetch_addr']
             del cycle['fetch_val']
