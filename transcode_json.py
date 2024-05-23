@@ -12,7 +12,7 @@ def load_state(buf, ptr) -> (int, Any):
     full_sz = unpack_from('i', buf, ptr)[0]
     state = {'R': [], 'R_': [], 'FP0': [], 'FP1': []}
     ptr += 8
-    values = unpack_from('I' * 68, buf, ptr)
+    values = unpack_from('I' * 69, buf, ptr)
 
     # R0-R15   16
     for i in range(0, 16):
@@ -50,6 +50,8 @@ def load_state(buf, ptr) -> (int, Any):
     state['PR'] = values[66]
     # FPSCR
     state['FPSCR'] = values[67]
+    # FPUL
+    state['FPUL'] = values[68]
     return full_sz, state
 
 def load_cycles(buf, ptr) -> (int, Dict):
