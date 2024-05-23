@@ -276,5 +276,6 @@ Disclaimers:
 * The tests treat RAM as a 32-bit flat space with no memory-mapped registers.
 * The tests may have bugs, this is an in-development release v0.1
 * This was developed by hacking parts of my emulator (jsmooch-emus) into Reicast. There may be issues with the tests we don't know yet.
+* Toggling RB causes the first 8 registers in R and R_ to actually swap, instead of updating some internal reference to them. That's how the 4 emulators I know of do it, so the test does too.
 
 I hope you find it useful!
