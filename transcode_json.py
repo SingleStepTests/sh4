@@ -59,8 +59,8 @@ def load_cycles(buf, ptr) -> (int, Dict):
     full_sz = unpack_from('i', buf, ptr)[0]
     ptr += 12
     for i in range(0, 4):
-        values = unpack_from('<IIIIIII', buf, ptr)
-        ptr += (7 * 4)
+        values = unpack_from('<IIIIQIQ', buf, ptr)
+        ptr += (5 * 4) + (2 * 8)
         cycle = {
             'actions': values[0],
             'fetch_addr': values[1],
