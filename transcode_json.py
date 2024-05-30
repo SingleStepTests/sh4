@@ -70,6 +70,8 @@ def load_cycles(buf, ptr) -> (int, Dict):
             'read_addr': values[5],
             'read_val': values[6]
         }
+        if (values[0] > 10):
+            print('ACTIONS?', values[0])
         if (values[1] > 0xFFFFFFFF) or (values[5] < 0):
             print('what?', values)
         if values[2] > 0xFFFF:
