@@ -215,12 +215,13 @@ Note that this assumes no real pipeline, though delay slots are tested for and s
 
 The opcodes in any give test go like this:
 
+```
 NOP          <-- start off with a NOP
 opcode       <-- run our opcode
 ADD R1, R1   <-- this will be in a delay slot, thus allowing detection of whether or not a delay slot is executed after an instruction
 NOP          <-- this allows the last instruction to not be a delay-slot
 ADD R2, R2   <-- if a branch is taken or PC goes haywire, this should also give us a difference, since it is always provided to anything not in the normal instruction flow
-
+```
 The first 4 are provided for the first 4 instruction fetches, starting at PC; the last one is provided for any instruction fetch anywhere else in memory.
 
 To run the test, set your CPU up by the initial state, run 4 cycles, and compare to the end state. Also compare what happens each instruction/cycle, to what your emulator does.
