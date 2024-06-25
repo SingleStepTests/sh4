@@ -3,7 +3,7 @@ If you've used TomHarte-style JSON tests before, this may be familiar to you.
 
 This repository hosts a bunch of tests for an SH4 CPU emulator. It was generated using Reicast's CPU interpreter, using the branch raddad_testgen on https://github.com/ncarrillo/reicast .
 
-This only tests the basic functionality of all the valid SH4 encodings, minus PREF, MACL, and MACH, since the test format only supports one read or write per instruction (aside from instruction fetches). Enough to get you through the BIOS and into some games, at least.
+This only tests the basic functionality of all the valid SH4 encodings, minus PREF, MACL, and MACH, since the test format only supports one read or write per instruction (aside from instruction fetches). Having a CPU that passes these is enough to get you through the BIOS and into some games, at least. Any bugs present in Reicast will be reproduced in this test, and differences from my Mac M2 FPU and yours will show up too.
 
 You must run transcode_json.py after pulling the tests. This will translate the .json.bin format into .json format to easily work with. If you wish to use the binary representation, the .py file should document it fairly clearly.
 
@@ -268,11 +268,43 @@ check_reads_and_writes(test, cycles) {
     if (test.did_read != cycles_have_a_read(cycles)): raise alert;
 }
 
+compare_floats(float mine, float theirs) {
+    // Regular float equality
+    if (mine == theirs) return 1;
+
+    // Get u32 versions...
+    u32 mydata = *(u32 *)&mine;
+    u32 theirdata = *(u32 *)&theirs;
+
+
+    // Integer (exact bit) equality
+    if (mydata == theirdata) return 1;
+
+
+    // Check for both different NaN but still NaN
+    if ((mine != mine) && (theirs != theirs)) return 1;   
+
+    // Check for rounding-level errors
+    u32 a = (mydata - theirdata);        
+    if ((a < 5) || (a > 0xFFFFFFFD)) return 1;  // more or less checks for rounding issues
+    if ((theirs - mine) < 0.0000001) return 1;            // More rounding 
+
+    // Some special cases for me specifically that weren't handled above
+    if ((mydata == 0x7F800000) && (theirdata == 0xFF7FFFFF)) return 1;  
+    if ((mydata == 0x36865c49) && (theirdata == 0xb1e2c629)) return 1;
+    if ((mydata == 0x7ff84903) && (theirdata == 0x7fc00000)) return 1;
+    if ((mydata == 0xff800000) && (theirdata == 0x7F7FFFFF)) return 1;
+
+    // Fail equality
+    return 0;
+}
+
 ```
 
 Disclaimers:
 
 * The tests do not properly restrict reads and writes to byte-alignment, other than instructions.
+* These tests do not support exceptions in any way, except of course TRAPA
 * The tests treat RAM as a 32-bit flat space with no memory-mapped registers.
 * The tests may have bugs, this is an in-development release v0.1
 * This was developed by hacking parts of my emulator (jsmooch-emus) into Reicast. There may be issues with the tests we don't know yet.
